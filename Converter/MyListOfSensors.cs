@@ -41,6 +41,9 @@ namespace Converter
                 case "dat":
                     return 3;
                     break;
+            //  case "dat1":
+               //    return 4;
+                //    break;
                 case "wow":
                     return 4;
                 default:
@@ -278,6 +281,8 @@ namespace Converter
                 string line = MyFile.ReadLine();
               
                 OriginalKKS = line.Split('\t').ToList();
+
+                MessageBox.Show(OriginalKKS[0]);
   
                 for (int i = 1; i < OriginalKKS.Count; i++)
                 {
@@ -334,7 +339,9 @@ namespace Converter
 
             OriginalKKS = line.Split('\t').ToList();
 
-            for (int i = 1; i < OriginalKKS.Count; i++)
+          //  MessageBox.Show(OriginalKKS[0]);
+
+            for (int i = 1; i < 4; i++)
             {
                 Sencors myonekks = new Sencors();
                 myonekks.KKS_Name = OriginalKKS[i];
@@ -350,9 +357,10 @@ namespace Converter
                 if (line != null)
                 {
                     massiv_znacheniy_postrochno = line.Split('\t').ToArray();
-                    for (int i = 1; i < massiv_znacheniy_postrochno.Length - 1; i++)
+                    for (int i = 1; i < 3; i++)
                     {
                         Record onerec = new Record();
+                     //   MessageBox.Show(massiv_znacheniy_postrochno[i].Replace(',', '.').Trim());
                         onerec.Value = double.Parse(massiv_znacheniy_postrochno[i].Replace('.', ',').Trim());
 
                         DateTime WindowsTime = new DateTime(1970, 1, 1).AddSeconds(double.Parse(massiv_znacheniy_postrochno[0].Replace('.', ',').Trim()));

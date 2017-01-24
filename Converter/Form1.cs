@@ -1194,6 +1194,14 @@ namespace Converter
         {
 
         }
+
+        private void button2_Click_2(object sender, EventArgs e)
+        {
+            Current Y = new Current();
+      
+                Y.SearchReactivity(Const.l_metodiki, Const.aAPIK, MyAllSensors); 
+            
+        }
     }
 }
 
