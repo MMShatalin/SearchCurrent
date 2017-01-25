@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,90 +8,83 @@ using System.Windows.Forms;
 
 namespace Converter
 {
-    class Current
+    internal class Current
     {
         #region Свойства
 
         //6 групп запаздывающих нейтронов
         //два массива для упрощения вычислений реактивности в дальнейшем
-        double[] _one = new double[6];
-        double[] _two = new double[6];
+        private double[] _one = new double[6];
+        private double[] _two = new double[6];
 
         //для поиска реактивности по формуле обращенного уравнения кинетики
         //это массив первых 6-ти значений, они все равны первому вычисленному току
         //так как нет предыдущего времени, а есть только первое значение
-        double[] _psi01 = new double[6];
-        double[] _psi02 = new double[6];
-
+         double[] psi0 = new double[6];
+       //  double[] FNext = new double[6];
         public double Ro; ////возвращает реактивность, рассчитанную в Беттах
         private double _tok1Old = double.NaN;
         private double _tok2Old = double.NaN;
 
-        public Current()
-        {
-            TimeOld = DateTime.MinValue;
-        }
-
-        public double Tok1New;
+     public double Tok1New;
         public double Tok2New;
-
+        List<double> MyReac = new List<double>();
         public double Reactivity1;
         public double Reactivity2;
         public double ReactivityAverage;
 
-        public DateTime TimeNow;
-        public DateTime TimeOld;
+        public double TimeNow;
+        public double TimeOld;
 
         #endregion
 
-
-
-        //TODO: Александр. Старые значения времени и токов нужно хранить в полях класса. Извне брать только текущие значения.
-        //эти методы должны расчитывать реактивности из Ток1 и Ток2
-        public void SearchReactivity(double[] l, double[] a, List<Sencors> N)
+        //токи типа должны быть вычислены до этого в методе
+        //в методе также должна быть переменная времени
+        //в данном случае берем Sensors, а не живые данные
+        public void AddFirstData(Sencors R)
         {
-            DateTime timeNow;
-            for (int ll = 0; ll < N[0].MyListRecordsForOneKKS.Count - 1; ll++)
+            this._tok1Old = R.MyListRecordsForOneKKS[0].Value;
+            this.TimeOld = R.MyListRecordsForOneKKS[0].ValueTimeForDAT;
+            for (int i = 0; i < 6; i++)
             {
-                if (TimeOld.Equals(DateTime.MinValue) && _tok1Old.Equals(double.NaN) && _tok2Old.Equals(double.NaN))
-                {
-                    for (int i = 0; i < 6; i++)
-                    {
-                        _psi01[i] = N[0].MyListRecordsForOneKKS[0].Value;
-                    }
-                    TimeOld = N[0].MyListRecordsForOneKKS[0].DateTime;
-
-                    _tok1Old = N[0].MyListRecordsForOneKKS[0].Value;
-                    timeNow = DateTime.Now;
-                }
-                else
-                {
-                    timeNow = N[0].MyListRecordsForOneKKS[ll].DateTime;
-                    
-                }
-            
-
-                var dt = timeNow - TimeOld;
-               MessageBox.Show(dt.ToString());
-                for (int i = 0; i < _one.Length; i++)
-                {
-                    double constTRaspada = l[i]*dt.TotalMilliseconds;
-                    MessageBox.Show(dt.TotalMilliseconds.ToString());
-                    _one[i] = Math.Exp(-constTRaspada);
-                    _two[i] = (1 - _one[i])/constTRaspada;
-                    _psi01[i] = _psi01[i] * _one[i] - (N[0].MyListRecordsForOneKKS[ll + 1].Value - _tok1Old) * _two[i] - _tok1Old * _one[i] + N[0].MyListRecordsForOneKKS[ll + 1].Value;
-                    Reactivity1 += a[i]*_psi01[i];
-                }
-
-                //Зачем потребовалось создать _timeNow ?? Да просто иначе если бы в этой строке стояло бы DateTime.Now то это было бы уже другое время, нежели участвующее в формуле выше!!!
-                TimeOld = timeNow;
-                _tok1Old = Tok1New;
-                Reactivity1 = 1 - Reactivity1 / Tok1New;
-             //   MessageBox.Show(Reactivity1.ToString());
+                psi0[i] = this._tok1Old;
             }
         }
+        public void AddData(Sencors R, List<double>  tttt)
+        {
+            this._tok1Old = R.MyListRecordsForOneKKS[0].Value;
+            this.TimeOld = R.MyListRecordsForOneKKS[0].ValueTimeForDAT;
+            for (int i = 0; i < 6; i++)
+            {
+                psi0[i] = this._tok1Old;
+            }
 
-        class MyConst
+            for (int k = 1; k < R.MyListRecordsForOneKKS.Count; k++)
+            {
+                double deltaT = R.MyListRecordsForOneKKS[k].ValueTimeForDAT - TimeOld;
+             //   var dt = R.MyListRecordsForOneKKS[k].Value - _tok1Old;
+                Ro = 0;
+             
+                for (int i = 0; i < 6; i++)
+                {
+                    double constTRaspada = MyConst.LMetodiki[i] * deltaT;
+                    _one[i] = Math.Exp(-constTRaspada);
+                    _two[i] = (1 - _one[i]) / constTRaspada;
+                    psi0[i] = psi0[i] * _one[i] - (R.MyListRecordsForOneKKS[k].Value - _tok1Old) * (_two[i]) - _tok1Old * _one[i] + R.MyListRecordsForOneKKS[k].Value; 
+                    double yt = MyConst.AApik[i] * psi0[i];
+                    Ro = Ro + yt;
+                }
+                Ro = 1 - Ro / R.MyListRecordsForOneKKS[k].Value;
+                tttt.Add(this.Ro);
+                _tok1Old = R.MyListRecordsForOneKKS[k].Value;
+                TimeOld = R.MyListRecordsForOneKKS[k].ValueTimeForDAT;
+            }
+        }
+    }
+
+
+
+    class MyConst
         {
             #region Свойства
 
@@ -103,5 +97,5 @@ namespace Converter
 
             #endregion
         }
-    }
+    
 }

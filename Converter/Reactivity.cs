@@ -48,6 +48,7 @@ namespace Converter
             }
             R = 1 - R / J_Now;
             return R;
-        }      
+        } 
+     
     }
 }

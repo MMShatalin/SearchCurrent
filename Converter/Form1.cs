@@ -1198,9 +1198,28 @@ namespace Converter
         private void button2_Click_2(object sender, EventArgs e)
         {
             Current Y = new Current();
-      
-                Y.SearchReactivity(Const.l_metodiki, Const.aAPIK, MyAllSensors); 
+            List<double> tttt = new List<double>();
+             //   Y.AddFirstData(MyAllSensors[0]);
+                Y.AddData(MyAllSensors[0],tttt);
+                for (int i = 0; i < MyAllSensors[0].MyListRecordsForOneKKS.Count-1; i++)
+                {
+                    chart1.Series[1].Points.AddXY(MyAllSensors[0].MyListRecordsForOneKKS[i].ValueTimeForDAT, tttt[i]);
+
+
+                }
+                chart1.Series[1].YAxisType = System.Windows.Forms.DataVisualization.Charting.AxisType.Secondary;
             
+        }
+
+        private void индексToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < MyAllSensors.Count; i++)
+            {
+                if(checkedListBox1.Text == MyAllSensors[i].KKS_Name)
+                {
+                    MessageBox.Show(i.ToString());
+                }
+            }
         }
     }
 }

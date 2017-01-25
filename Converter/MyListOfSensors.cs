@@ -341,7 +341,7 @@ namespace Converter
 
           //  MessageBox.Show(OriginalKKS[0]);
 
-            for (int i = 1; i < 4; i++)
+            for (int i = 1; i < 6; i++)
             {
                 Sencors myonekks = new Sencors();
                 myonekks.KKS_Name = OriginalKKS[i];
@@ -357,7 +357,7 @@ namespace Converter
                 if (line != null)
                 {
                     massiv_znacheniy_postrochno = line.Split('\t').ToArray();
-                    for (int i = 1; i < 3; i++)
+                    for (int i = 1; i < 5; i++)
                     {
                         Record onerec = new Record();
                      //   MessageBox.Show(massiv_znacheniy_postrochno[i].Replace(',', '.').Trim());
