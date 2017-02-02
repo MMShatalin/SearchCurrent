@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Converter
 {
-    struct Record
+    public struct Record
     {
         public DateTime DateTime;
         public double Value;
         public double ValueTimeForDAT;
     }
 
-    class Sencors: IComparable
+    public class Sencors: IComparable
     {
         int L;
         public string KKS_Name { get; set; }
@@ -39,6 +39,20 @@ namespace Converter
         {
             var oth = other as Sencors;
             return this.KKS_Name.CompareTo(oth.KKS_Name);
+        }
+
+        public static int getOneKKSByIndex(string checkName, List<Sencors> MyList)
+        {
+            int index = 0;
+            for (int i = 0; i < MyList.Count; i++)
+            {
+                if (checkName == MyList[i].KKS_Name )
+                {
+                    index = i;
+                }
+            }
+
+            return index;
         }
     }
 }

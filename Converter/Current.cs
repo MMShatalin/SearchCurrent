@@ -50,7 +50,7 @@ namespace Converter
                 psi0[i] = this._tok1Old;
             }
         }
-        public void AddData(Sencors R, List<double>  tttt)
+        public void AddData(Sencors R, List<double>  MyListReactivity)
         {
             this._tok1Old = R.MyListRecordsForOneKKS[0].Value;
             this.TimeOld = R.MyListRecordsForOneKKS[0].ValueTimeForDAT;
@@ -75,7 +75,7 @@ namespace Converter
                     Ro = Ro + yt;
                 }
                 Ro = 1 - Ro / R.MyListRecordsForOneKKS[k].Value;
-                tttt.Add(this.Ro);
+                MyListReactivity.Add(Ro);
                 _tok1Old = R.MyListRecordsForOneKKS[k].Value;
                 TimeOld = R.MyListRecordsForOneKKS[k].ValueTimeForDAT;
             }
