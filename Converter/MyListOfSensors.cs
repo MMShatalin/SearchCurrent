@@ -107,12 +107,11 @@ namespace Converter
             {
                 KKS.Clear();
                 KKS = line.Split('\t').ToList();
-             //   MessageBox.Show(KKS[0] + " " + KKS[1]);
-                Record myRec = new Record();
-                myRec.ValueTimeForDAT = double.Parse(KKS[0]);
-                myRec.DateTime = new DateTime(1970, 1, 1).AddSeconds(double.Parse(KKS[0].Trim()));
                 for (int i = 1; i < MyList.Count+1; i++)
                 {
+                    Record myRec = new Record();
+                    myRec.ValueTimeForDAT = double.Parse(KKS[0]);
+                    myRec.DateTime = new DateTime(1970, 1, 1).AddSeconds(double.Parse(KKS[0].Trim()));
                     myRec.Value =  double.Parse(KKS[i]);
                     MyList[i-1].MyListRecordsForOneKKS.Add(myRec);
                 }

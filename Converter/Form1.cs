@@ -26,6 +26,7 @@ namespace Converter
         private MyVirtualClass customerInEdit;
         private int rowInEdit = -1;
         private bool rowScopeCommit = true;
+
         public Form1()
         {
             InitializeComponent();
@@ -56,6 +57,7 @@ namespace Converter
         int indexTOK2;
         int indexR1;
         int indexR2;
+
         private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             r.Clear();
@@ -99,7 +101,7 @@ namespace Converter
                 //     textBox1.Text = Convert.ToString(openFileDialog1.FileName);
 
                 FileInfo File = new FileInfo(openFileDialog1.FileName);
-                HowMuchMegobite = File.Length / 1024 / 1024;
+                HowMuchMegobite = File.Length/1024/1024;
 
                 foreach (var item in openFileDialog1.FileNames)
                 {
@@ -108,8 +110,8 @@ namespace Converter
 
                 MyAllSensors.Sort();
 
-                
-                
+
+
                 //textBox2.Text = progressBar2.Maximum + " " + MyAllSensors[0].MyListRecordsForOneKKS.Count;
                 for (int i = 0; i < MyAllSensors.Count; i++)
                 {
@@ -134,16 +136,18 @@ namespace Converter
                         indexR2 = j;
                     }
                 }
-           //     MessageBox.Show(indexTOK1 + " " + indexTOK2 + " " + indexR1 + " " + indexR2);
-                
+                //     MessageBox.Show(indexTOK1 + " " + indexTOK2 + " " + indexR1 + " " + indexR2);
 
-            }//End openFileDialog1.ShowDialog()
+
+            } //End openFileDialog1.ShowDialog()
         }
+
         Excel.Application xlApp;
         private Excel.Workbook xlWorkBook;
 
         DateTime MyBeginner;
         DateTime MyFinished;
+
         private void button1_Click_1(object sender, EventArgs e)
         {
         }
@@ -157,6 +161,7 @@ namespace Converter
             очиститьToolStripMenuItem.Enabled = false;
             открытьToolStripMenuItem.Enabled = true;
         }
+
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
 
@@ -196,12 +201,12 @@ namespace Converter
                 chart1.Series["Series" + i].IsVisibleInLegend = false;
                 chart1.Series["Series" + i].Points.Clear();
             }
-            
+
             //ОЧИСТКА ПОДПИСЕЙ ПАРАМЕТРОВ ОСЕЙ
             chart1.Annotations.Clear();
             listaver.Clear();
             chart1.ChartAreas[0].AxisX.IntervalAutoMode = IntervalAutoMode.FixedCount;
-            chart1.ChartAreas[0].Position.Auto = true;      
+            chart1.ChartAreas[0].Position.Auto = true;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -223,14 +228,18 @@ namespace Converter
         {
 
         }
-        System.Windows.Forms.DataVisualization.Charting.ChartArea newchar = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+
+        System.Windows.Forms.DataVisualization.Charting.ChartArea newchar =
+            new System.Windows.Forms.DataVisualization.Charting.ChartArea();
 
 
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
 
         }
+
         List<double> Y = new List<double>();
+
         private void добавитьНаОсьXToolStripMenuItem_Click(object sender, EventArgs e)
         {
             chart1.ChartAreas[0].AxisY.MinorTickMark.Enabled = true;
@@ -252,11 +261,13 @@ namespace Converter
             chart1.ChartAreas[0].AxisY2.Enabled = AxisEnabled.Auto;
             for (int j = 0; j < MyAllSensors.Count; j++)
             {
-                if ((string)checkedListBox1.Text == MyAllSensors[j].KKS_Name)
+                if ((string) checkedListBox1.Text == MyAllSensors[j].KKS_Name)
                 {
                     for (int i = 0; i < MyAllSensors[j].MyListRecordsForOneKKS.Count; i++)
                     {
-                        chart1.Series[chart1.Series[NumberSeries].Name].Points.AddXY(MyAllSensors[j].MyListRecordsForOneKKS[i].DateTime, MyAllSensors[j].MyListRecordsForOneKKS[i].Value);
+                        chart1.Series[chart1.Series[NumberSeries].Name].Points.AddXY(
+                            MyAllSensors[j].MyListRecordsForOneKKS[i].DateTime,
+                            MyAllSensors[j].MyListRecordsForOneKKS[i].Value);
                         //    Y.Add(MyAllSensors[j].MyListRecordsForOneKKS[i].Value);
 
                     }
@@ -286,6 +297,7 @@ namespace Converter
 
 
         List<double> listaver = new List<double>();
+
         private void добавитьНаОсьYToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -301,24 +313,27 @@ namespace Converter
             companyNameColumn.Name = "Время";
             this.dataGridView1.Columns.Add(companyNameColumn);
             DataGridViewTextBoxColumn companyNameColumn1 = new
-               DataGridViewTextBoxColumn();
+                DataGridViewTextBoxColumn();
             companyNameColumn1.HeaderText = "Значение";
             companyNameColumn1.Name = "Значение";
 
             this.dataGridView1.Columns.Add(companyNameColumn1);
-          
+
             chart1.Series[0].LegendText = checkedListBox1.Text;
 
             for (int i = 1; i < 11; i++)
                 chart1.Series["Series" + i].IsVisibleInLegend = false;
 
+            dataGridView1.Columns[0].Width = 200;
+            dataGridView1.Columns[1].Width = 200;
+
             chart1.ChartAreas[0].AxisX.TitleFont = new System.Drawing.Font("Times New Roman", 14, FontStyle.Regular);
             chart1.ChartAreas[0].AxisY.TitleFont = new System.Drawing.Font("Times New Roman", 14, FontStyle.Regular);
-           
+
         }
 
         private void dataGridView1_CellValueNeeded(object sender,
-        System.Windows.Forms.DataGridViewCellValueEventArgs e)
+            System.Windows.Forms.DataGridViewCellValueEventArgs e)
         {
             //this.dataGridView1.RowCount = 1;
             // If this is the row for new records, no values are needed.
@@ -333,7 +348,7 @@ namespace Converter
             }
             else
             {
-                customerTmp = (MyVirtualClass)this.customers[e.RowIndex];
+                customerTmp = (MyVirtualClass) this.customers[e.RowIndex];
             }
 
             // Set the cell value to paint using the Customer object retrieved.
@@ -348,6 +363,7 @@ namespace Converter
                     break;
             }
         }
+
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -363,7 +379,8 @@ namespace Converter
 
                 for (int i = 0; i < myOneKKS.MyListRecordsForOneKKS.Count; i++)
                 {
-                    this.customers.Add(new MyVirtualClass(myOneKKS.MyListRecordsForOneKKS[i].DateTime.ToString(), myOneKKS.MyListRecordsForOneKKS[i].Value.ToString()));
+                    this.customers.Add(new MyVirtualClass(myOneKKS.MyListRecordsForOneKKS[i].DateTime.ToString("dd.MM.yy HH:mm:ss.fff"),
+                        myOneKKS.MyListRecordsForOneKKS[i].Value.ToString()));
 
                 }
                 if (this.dataGridView1.RowCount == 0)
@@ -421,12 +438,14 @@ namespace Converter
             //    button1.Enabled = true;
             //}
         }
+
         double value;
 
         List<DateTime> fff = new List<DateTime>();
 
         List<DateTime> beg = new List<DateTime>();
         List<DateTime> end = new List<DateTime>();
+
         private void chart1_MouseDown(object sender, MouseEventArgs e)
         {
 
@@ -484,14 +503,16 @@ namespace Converter
 
             for (int j = 0; j < MyAllSensors.Count; j++)
             {
-                if ((string)checkedListBox1.Text == MyAllSensors[j].KKS_Name)
+                if ((string) checkedListBox1.Text == MyAllSensors[j].KKS_Name)
                 {
                     for (int i = 0; i < MyAllSensors[j].MyListRecordsForOneKKS.Count; i++)
                     {
-                        chart1.Series[b].Points.AddXY(MyAllSensors[j].MyListRecordsForOneKKS[i].ValueTimeForDAT, MyAllSensors[j].MyListRecordsForOneKKS[i].Value);
+                        chart1.Series[b].Points.AddXY(MyAllSensors[j].MyListRecordsForOneKKS[i].ValueTimeForDAT,
+                            MyAllSensors[j].MyListRecordsForOneKKS[i].Value);
                     }
                     chart1.Series[NumberSeries].IsVisibleInLegend = true;
-                    chart1.Series[NumberSeries].LegendText = MyAllSensors[j].KKS_Name;;
+                    chart1.Series[NumberSeries].LegendText = MyAllSensors[j].KKS_Name;
+                    ;
                 }
             }
         }
@@ -533,6 +554,7 @@ namespace Converter
 
 
         }
+
         //Word.Application word = new Word.Application();
         private void справкаToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -620,7 +642,9 @@ namespace Converter
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
         {
         }
+
         public int AmountPoint;
+
         private void button2_Click_1(object sender, EventArgs e)
         {
 
@@ -629,6 +653,7 @@ namespace Converter
 
             //  textBox2.Text = progressBar2.Maximum.ToString() + " " + MyAllSensors[0].MyListRecordsForOneKKS.Count;
         }
+
         private void copySelectedRowsToClipboard(DataGridView dgv)
         {
             dgv.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
@@ -640,7 +665,7 @@ namespace Converter
                 IDataObject dt = Clipboard.GetDataObject();
                 if (dt.GetDataPresent(typeof(string)))
                 {
-                    string tb = (string)(dt.GetData(typeof(string)));
+                    string tb = (string) (dt.GetData(typeof(string)));
                     Encoding encoding = Encoding.GetEncoding(1251);
                     byte[] dataStr = encoding.GetBytes(tb);
                     Clipboard.SetDataObject(encoding.GetString(dataStr));
@@ -648,6 +673,7 @@ namespace Converter
             }
             dgv.ClipboardCopyMode = DataGridViewClipboardCopyMode.Disable;
         }
+
         private void dataGridView2_MouseDown(object sender, MouseEventArgs e)
         {
 
@@ -661,18 +687,18 @@ namespace Converter
         private void dataGridView2_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.C)
-                if (((DataGridView)sender).SelectedCells.Count > 0)
+                if (((DataGridView) sender).SelectedCells.Count > 0)
                 {
-                    copySelectedRowsToClipboard((DataGridView)sender);
+                    copySelectedRowsToClipboard((DataGridView) sender);
                 }
         }
 
         private void dataGridView1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.C)
-                if (((DataGridView)sender).SelectedCells.Count > 0)
+                if (((DataGridView) sender).SelectedCells.Count > 0)
                 {
-                    copySelectedRowsToClipboard((DataGridView)sender);
+                    copySelectedRowsToClipboard((DataGridView) sender);
                 }
         }
 
@@ -696,6 +722,7 @@ namespace Converter
 
 
         List<DateTime> rrrg = new List<DateTime>();
+
         private void button3_Click(object sender, EventArgs e)
         {
         }
@@ -709,6 +736,7 @@ namespace Converter
         private void button4_Click(object sender, EventArgs e)
         {
         }
+
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
@@ -739,7 +767,8 @@ namespace Converter
         {
             for (int i = 0; i < MyAllSensors[3].MyListRecordsForOneKKS.Count; i++)
             {
-                chart1.Series[0].Points.AddXY(MyAllSensors[3].MyListRecordsForOneKKS[i].ValueTimeForDAT, MyAllSensors[3].MyListRecordsForOneKKS[i].Value);
+                chart1.Series[0].Points.AddXY(MyAllSensors[3].MyListRecordsForOneKKS[i].ValueTimeForDAT,
+                    MyAllSensors[3].MyListRecordsForOneKKS[i].Value);
             }
         }
 
@@ -760,12 +789,17 @@ namespace Converter
             NumberSeries++;
         }
 
-        public List<System.Windows.Forms.DataVisualization.Charting.ChartArea> CollectionAxis = new List<System.Windows.Forms.DataVisualization.Charting.ChartArea>();
+        public List<System.Windows.Forms.DataVisualization.Charting.ChartArea> CollectionAxis =
+            new List<System.Windows.Forms.DataVisualization.Charting.ChartArea>();
+
         public System.Windows.Forms.DataVisualization.Charting.ChartArea areaAxis;
         public System.Windows.Forms.DataVisualization.Charting.ChartArea areaSeries;
         public System.Windows.Forms.DataVisualization.Charting.Chart chart;
         public System.Windows.Forms.DataVisualization.Charting.ChartArea area;
-        public void CreateYAxis(System.Windows.Forms.DataVisualization.Charting.Chart chart, System.Windows.Forms.DataVisualization.Charting.ChartArea area, System.Windows.Forms.DataVisualization.Charting.Series series, float axisOffset, float labelsSize)
+
+        public void CreateYAxis(System.Windows.Forms.DataVisualization.Charting.Chart chart,
+            System.Windows.Forms.DataVisualization.Charting.ChartArea area,
+            System.Windows.Forms.DataVisualization.Charting.Series series, float axisOffset, float labelsSize)
         {
             // Create new chart area for original series
             areaSeries = chart.ChartAreas.Add("ChartArea_" + series.Name);
@@ -788,7 +822,8 @@ namespace Converter
             areaAxis.BackColor = Color.Transparent;
             areaAxis.BorderColor = Color.Transparent;
             areaAxis.Position.FromRectangleF(chart.ChartAreas[series.ChartArea].Position.ToRectangleF());
-            areaAxis.InnerPlotPosition.FromRectangleF(chart.ChartAreas[series.ChartArea].InnerPlotPosition.ToRectangleF());
+            areaAxis.InnerPlotPosition.FromRectangleF(
+                chart.ChartAreas[series.ChartArea].InnerPlotPosition.ToRectangleF());
             CollectionAxis.Add(areaAxis);
 
             // Create a copy of specified series
@@ -832,7 +867,7 @@ namespace Converter
 
         private void вклДополнительныеОсиToolStripMenuItem_Click(object sender, EventArgs e)
         {
-          
+
         }
 
         private void ljfpoefodjcfToolStripMenuItem_Click(object sender, EventArgs e)
@@ -854,6 +889,7 @@ namespace Converter
         {
 
         }
+
         int indexAKR1;
         int indexAKR2;
         int indexAKR3;
@@ -867,6 +903,7 @@ namespace Converter
         double OtnosOtklonenie;
         double Pogreshnost;
         double AverageAKR;
+
         private void найтиРеактивностиПоТокуИПостроитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MyAKR.Add(MyAllSensors[192].KKS_Name);
@@ -912,8 +949,8 @@ namespace Converter
                 {
                     indexAKR8 = j;
                 }
-            }//192
-           
+            } //192
+
             for (int j = 0; j < MyAllSensors.Count; j++)
             {
                 if (checkedListBox1.Text == MyAllSensors[j].KKS_Name)
@@ -923,15 +960,21 @@ namespace Converter
             }
 
             Reactivity MyR = new Reactivity();
-     
+
             MyR.PSI0(MyAllSensors[IndexTok].MyListRecordsForOneKKS[0].Value);
             for (int i = 1; i < MyAllSensors[IndexTok].MyListRecordsForOneKKS.Count; i++)
             {
-                double R1 = MyR.SearchR(MyAllSensors[IndexTok].MyListRecordsForOneKKS[i].ValueTimeForDAT, MyAllSensors[IndexTok].MyListRecordsForOneKKS[i - 1].ValueTimeForDAT, MyAllSensors[IndexTok].MyListRecordsForOneKKS[i].Value, MyAllSensors[IndexTok].MyListRecordsForOneKKS[i - 1].Value, Const.l_metodiki, Const.aAPIK);
-                chart1.Series[NumberSeries].Points.AddXY(MyAllSensors[indexTOK1].MyListRecordsForOneKKS[i].ValueTimeForDAT, R1);
+                double R1 = MyR.SearchR(MyAllSensors[IndexTok].MyListRecordsForOneKKS[i].ValueTimeForDAT,
+                    MyAllSensors[IndexTok].MyListRecordsForOneKKS[i - 1].ValueTimeForDAT,
+                    MyAllSensors[IndexTok].MyListRecordsForOneKKS[i].Value,
+                    MyAllSensors[IndexTok].MyListRecordsForOneKKS[i - 1].Value, Const.l_metodiki, Const.aAPIK);
+                chart1.Series[NumberSeries].Points.AddXY(
+                    MyAllSensors[indexTOK1].MyListRecordsForOneKKS[i].ValueTimeForDAT, R1);
             }
         }
+
         int IndexTok;
+
         private void индексКакойToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -939,14 +982,14 @@ namespace Converter
 
         private void button2_Click_2(object sender, EventArgs e)
         {
-               
+
         }
 
         private void индексToolStripMenuItem_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < MyAllSensors.Count; i++)
             {
-                if(checkedListBox1.Text == MyAllSensors[i].KKS_Name)
+                if (checkedListBox1.Text == MyAllSensors[i].KKS_Name)
                 {
                     MessageBox.Show(i.ToString());
                 }
@@ -955,34 +998,46 @@ namespace Converter
 
         private void расчитатьРеактивностьИПостроитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Current Y = new Current();
-            List<double> MyListReactivity = new List<double>();
-            int indexTok = Sencors.getOneKKSByIndex(checkedListBox1.Text, MyAllSensors);
-            Y.AddData(MyAllSensors[indexTok], MyListReactivity);
-            for (int i = 0; i < MyAllSensors[indexTok].MyListRecordsForOneKKS.Count - 1; i++)
+
+            if (saveFileDialog4.ShowDialog() == DialogResult.OK)
             {
-                chart1.Series[NumberSeries].Points.AddXY(MyAllSensors[indexTok].MyListRecordsForOneKKS[i].ValueTimeForDAT, MyListReactivity[i]);
+
+                StreamWriter MyFile = new StreamWriter(saveFileDialog4.FileName + ".csv");
+                Current Y = new Current();
+                List<double> MyListReactivity = new List<double>();
+                int indexTok = Sencors.getOneKKSByIndex(checkedListBox1.Text, MyAllSensors);
+                Y.AddData(MyAllSensors[indexTok], MyListReactivity);
+
+                MyFile.WriteLine("Время" + ";" + "Расчетная реактивность");
+                for (int i = 0; i < MyAllSensors[indexTok].MyListRecordsForOneKKS.Count - 1; i++)
+                {
+                    chart1.Series[NumberSeries].Points.AddXY(
+                    MyAllSensors[indexTok].MyListRecordsForOneKKS[i].ValueTimeForDAT, MyListReactivity[i]);
+                    MyFile.WriteLine(MyAllSensors[indexTok].MyListRecordsForOneKKS[i].ValueTimeForDAT + ";" + MyListReactivity[i]);
+                }
+
+                MyFile.Close();
+
+                chart1.Series[NumberSeries].IsVisibleInLegend = true;
+                chart1.Series[NumberSeries].LegendText = MyAllSensors[indexTok].KKS_Name;
+                chart1.Series[NumberSeries].YAxisType = AxisType.Secondary;
+
+                chart1.ChartAreas[0].AxisY2.MinorTickMark.Enabled = true;
+                chart1.ChartAreas[0].AxisY2.MinorTickMark.LineDashStyle = ChartDashStyle.Dash;
+                chart1.ChartAreas[0].AxisY2.MinorGrid.Enabled = true;
+                chart1.ChartAreas[0].AxisY2.MinorGrid.LineDashStyle = ChartDashStyle.Dash;
+                chart1.ChartAreas[0].AxisY2.MinorGrid.LineColor = Color.LightGray;
+                chart1.ChartAreas[0].AxisY2.MinorTickMark.LineColor = Color.LightGray;
+
+                chart1.ChartAreas[0].AxisY2.MajorTickMark.Enabled = true;
+                chart1.ChartAreas[0].AxisY2.MajorTickMark.LineDashStyle = ChartDashStyle.Dash;
+                chart1.ChartAreas[0].AxisY2.MajorGrid.Enabled = true;
+                chart1.ChartAreas[0].AxisY2.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
+                chart1.ChartAreas[0].AxisY2.MajorGrid.LineColor = Color.Gray;
+                chart1.ChartAreas[0].AxisY2.MajorTickMark.LineColor = Color.Gray;
+
+                NumberSeries++;
             }
-
-            chart1.Series[NumberSeries].IsVisibleInLegend = true;
-            chart1.Series[NumberSeries].LegendText = MyAllSensors[indexTok].KKS_Name;
-            chart1.Series[NumberSeries].YAxisType = AxisType.Secondary;
-          
-            chart1.ChartAreas[0].AxisY2.MinorTickMark.Enabled = true;
-            chart1.ChartAreas[0].AxisY2.MinorTickMark.LineDashStyle = ChartDashStyle.Dash;
-            chart1.ChartAreas[0].AxisY2.MinorGrid.Enabled = true;
-            chart1.ChartAreas[0].AxisY2.MinorGrid.LineDashStyle = ChartDashStyle.Dash;
-            chart1.ChartAreas[0].AxisY2.MinorGrid.LineColor = Color.LightGray;
-            chart1.ChartAreas[0].AxisY2.MinorTickMark.LineColor = Color.LightGray;
-
-            chart1.ChartAreas[0].AxisY2.MajorTickMark.Enabled = true;
-            chart1.ChartAreas[0].AxisY2.MajorTickMark.LineDashStyle = ChartDashStyle.Dash;
-            chart1.ChartAreas[0].AxisY2.MajorGrid.Enabled = true;
-            chart1.ChartAreas[0].AxisY2.MajorGrid.LineDashStyle = ChartDashStyle.Dash;
-            chart1.ChartAreas[0].AxisY2.MajorGrid.LineColor = Color.Gray;
-            chart1.ChartAreas[0].AxisY2.MajorTickMark.LineColor = Color.Gray;
-       
-            NumberSeries++;
         }
     }
 }
