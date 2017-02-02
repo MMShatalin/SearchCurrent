@@ -35,16 +35,12 @@ namespace Converter
                 case "txt":
                     return 1;
                     break;
-                case "rsa":
+                case "dat":
                     return 2;
                     break;
-                case "dat":
-                    return 3;
-                    break;
-            //  case "dat1":
-               //    return 4;
-                //    break;
                 case "wow":
+                    return 3;
+                case "ex":
                     return 4;
                 default:
                     return -1;
@@ -61,17 +57,15 @@ namespace Converter
                 {
                     case 1:
                         this.LoadAPIK(filename,  y);
-                        break;
-                    case 2:
-                        this.LoadRSAnvaes2(filename,   y);
-                        break;
-//редактировать
-                    case 3:
+                        break;             
+                   case 2:
                         this.LoadDATnvaes2(filename,  y);
                         break;
-
-                    case 4:
+                    case 3:
                         this.LoadBusherFile(filename,  y);
+                        break;
+                    case 4:
+                        this.LoadEx(filename, y);
                         break;
 
                     default:
@@ -79,129 +73,53 @@ namespace Converter
                 }
             }
         }
-        private void LoadRSAnvaes2(string filename, MyListOfSensors y)
+
+        public void LoadEx(string filename, MyListOfSensors p)
         {
-            MyListOfSensors MyList = new MyListOfSensors();
-            StreamReader MyFileRSA = new StreamReader(filename);
-            MyList.Clear();
-
-            for (int i = 0; i < 18; i++)
-            {
-                MyFileRSA.ReadLine();
-            }
-
-            List<string> MyListKKS = new List<string>();
-
-            string Line;
-            string All_Line = null;
-            while ((Line = MyFileRSA.ReadLine()) != "MaxRowCnt=1000")
-            {
-                Line = Line.Remove(0, 13);
-                All_Line = All_Line + Line;
-
-                MyListKKS = All_Line.Split(';').ToList();
-            }
-            MyListKKS.RemoveAt(MyListKKS.Count - 1);
-
-            for (int i = 0; i < MyListKKS.Count; i++)
-            {
-                Sencors MyOneSensors = new Sencors();
-                MyOneSensors.KKS_Name = MyListKKS[i]; ;
-
-                //возможно ошибка
-                MyList.Add(MyOneSensors);
-            }
-
-            int Length_MyFile = System.IO.File.ReadAllLines(filename).Length;
-
-            Line = null;
-
-            while ((Line != "RsaData"))
-            {
-                Line = MyFileRSA.ReadLine();
-                string Identificator_Start_Read = Line.Split('=')[0].Trim();
-                if (Identificator_Start_Read == "RsaData")
-                {
-                    break;
-                }
-            }
-
-           
-            do
-            {
-                List<string> Values = new List<string>();
-                Values.Clear();
-
-                Line = Line.Remove(0, 8);
-
-                Record MyRecord = new Record();
-                MyRecord.DateTime = Convert.ToDateTime(Line.Split(';')[0]);
-
-                string With_Delete_Time = Line.Remove(0, 26);
-                List<string> ValuesAndIndicator = new List<string>();
-
-                ValuesAndIndicator = With_Delete_Time.Split(';').ToList();
-
-                for (int i = 0; i < ValuesAndIndicator.Count - 1; i++)
-                {
-                    Values.Add(ValuesAndIndicator[i].Split(' ')[1]);
-
-                }
-                for (int i = 0; i < MyList.Count - 1; i++)
-                {
-                    MyRecord.Value = double.Parse(Values[i].Replace('.', ',').Trim());
-                    MyList[i].MyListRecordsForOneKKS.Add(MyRecord);
-                }
-                Line = MyFileRSA.ReadLine();
-               // MyProgressBar.Value++;
-            }
-            while (Line != null);
-
-         
-
-            MyFileRSA.Close();
-
-            y.AddRange(MyList);
-        }//End LoadRSAnvaes2
-
-        private void LoadTXTnvaes2(string filename,  MyListOfSensors p)
-        {
-
-            StreamReader MyFileTXT = new StreamReader(filename);
+            string line = "";
+            StreamReader MyFile = new StreamReader(filename, Encoding.GetEncoding("Windows-1251"));
             MyListOfSensors MyList = new MyListOfSensors();
             MyList.Clear();
 
-
-            int y = System.IO.File.ReadAllLines(filename).Length;
-            
-
-            for (int i = 0; i < 4; i++)
-                MyFileTXT.ReadLine();
-
-            string line;
-
-            while ((line = MyFileTXT.ReadLine()) != null)
+            List<string> KKS = new List<string>();
+            line = MyFile.ReadLine();
+            KKS = line.Split('\t').ToList();
+            foreach (var item in KKS)
             {
-                if (MyList.getSensorByKKSName(line.Split('\t')[1]) != null)
+                if (item == "")
                 {
-                    Record OneRecord = new Record();
-                    OneRecord.DateTime = Convert.ToDateTime(line.Split('\t')[0].Replace('.', '/').Replace(',', '.').Trim());
-                    OneRecord.Value = double.Parse(line.Split('\t')[2].Replace('.', ',').Replace('-', '0').Trim());
-                    MyList.getSensorByKKSName(line.Split('\t')[1]).MyListRecordsForOneKKS.Add(OneRecord);
+                    KKS.Remove(item);
                 }
-                else
+            }
+            int i2 = 0;
+            foreach (string item in KKS)
+            {
+                i2++;
+                if (i2 > 1)
                 {
-                    Sencors myoneKKS = new Sencors(line);
-                    MyList.Add(myoneKKS);
-                } //else
-             
+                    Sencors myonekks = new Sencors();
+                    myonekks.KKS_Name = item;
+                    MyList.Add(myonekks);
+                }
             }
 
+            while ((line = MyFile.ReadLine())!=null)
+            {
+                KKS.Clear();
+                KKS = line.Split('\t').ToList();
+             //   MessageBox.Show(KKS[0] + " " + KKS[1]);
+                Record myRec = new Record();
+                myRec.ValueTimeForDAT = double.Parse(KKS[0]);
+                myRec.DateTime = new DateTime(1970, 1, 1).AddSeconds(double.Parse(KKS[0].Trim()));
+                for (int i = 1; i < MyList.Count+1; i++)
+                {
+                    myRec.Value =  double.Parse(KKS[i]);
+                    MyList[i-1].MyListRecordsForOneKKS.Add(myRec);
+                }
+            }
             p.AddRange(MyList);
-
-            MyFileTXT.Close();
-
-        }//End LoadTXTnvaes2
+            MyFile.Close();  
+        }
 
         public void LoadAPIK(string filename, MyListOfSensors p)
         {
