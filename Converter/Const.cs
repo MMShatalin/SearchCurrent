@@ -39,6 +39,8 @@ namespace Converter
       //  public static double[] aAKR = {0.029, 0.204, 0.188, 0.395, 0.135, 0.048};
 
        public static double[] aAPIK = { 0.034, 0.202, 0.184, 0.403, 0.143, 0.034 };
+       
+        
         public static double Beff = 0.74;
     }
 }
