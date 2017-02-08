@@ -107,9 +107,9 @@ namespace Converter
                 {
                     Record myRec = new Record();
                  //   MessageBox.Show(KKS[0]);
-                    myRec.ValueTimeForDAT = double.Parse(KKS[0].Replace(".",","));
-                    myRec.DateTime = new DateTime(1970, 1, 1).AddSeconds(double.Parse(KKS[0].Replace(".",",").Trim()));
-                    myRec.Value = double.Parse(KKS[i].Replace(".", ","));
+                    myRec.ValueTimeForDAT = double.Parse(KKS[0].Replace(",","."));
+                    myRec.DateTime = new DateTime(1970, 1, 1).AddSeconds(double.Parse(KKS[0].Replace(",",".").Trim()));
+                    myRec.Value = double.Parse(KKS[i].Replace(",", "."));
                     MyList[i-1].MyListRecordsForOneKKS.Add(myRec);
                 }
             }
