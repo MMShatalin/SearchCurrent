@@ -98,18 +98,21 @@ namespace Converter
                     MyList.Add(myonekks);
                 }
             }
-    
+         
             while ((line = MyFile.ReadLine())!=null)
             {
                 KKS.Clear();
                 KKS = line.Split('\t').ToList();
+              //  foreach (var item in KKS)
+               // {
+                //    MessageBox.Show(item);
+               // }
                 for (int i = 1; i < MyList.Count+1; i++)
                 {
                     Record myRec = new Record();
-                 //   MessageBox.Show(KKS[0]);
-                    myRec.ValueTimeForDAT = double.Parse(KKS[0].Replace(",","."));
-                    myRec.DateTime = new DateTime(1970, 1, 1).AddSeconds(double.Parse(KKS[0].Replace(",",".").Trim()));
-                    myRec.Value = double.Parse(KKS[i].Replace(",", "."));
+                    myRec.ValueTimeForDAT = double.Parse(KKS[0].Replace(".",","));
+                    myRec.DateTime = new DateTime(1970, 1, 1).AddSeconds(double.Parse(KKS[0].Replace(".",",").Trim()));
+                    myRec.Value = double.Parse(KKS[i].Replace(".", ","));
                     MyList[i-1].MyListRecordsForOneKKS.Add(myRec);
                 }
             }

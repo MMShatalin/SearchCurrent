@@ -108,7 +108,7 @@ namespace Converter
                     MyAllSensors.LoadFromFile(item, MyAllSensors);
                 }
 
-                MyAllSensors.Sort();
+              //  MyAllSensors.Sort();
 
 
 
@@ -379,7 +379,7 @@ namespace Converter
 
                 for (int i = 0; i < myOneKKS.MyListRecordsForOneKKS.Count; i++)
                 {
-                    this.customers.Add(new MyVirtualClass(myOneKKS.MyListRecordsForOneKKS[i].DateTime.ToString("dd.MM.yy HH:mm:ss.fff"),
+                    this.customers.Add(new MyVirtualClass(myOneKKS.MyListRecordsForOneKKS[i].ValueTimeForDAT.ToString(),
                         myOneKKS.MyListRecordsForOneKKS[i].Value.ToString()));
 
                 }

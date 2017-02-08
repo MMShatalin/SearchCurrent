@@ -13,7 +13,7 @@ namespace Converter
         public double ValueTimeForDAT;
     }
 
-    public class Sencors: IComparable
+    public class Sencors
     {
         int L;
         public string KKS_Name { get; set; }
